@@ -65,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 15)),
+                            horizontal: 50, vertical: 10)),
                     onPressed: () async {
                       await _authenticationController.register(
                           name: _nameController.text.trim(),
