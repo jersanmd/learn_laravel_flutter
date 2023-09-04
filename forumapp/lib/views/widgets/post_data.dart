@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:forumapp/controllers/post_controller.dart';
 import 'package:forumapp/models/post_model.dart';
 import 'package:forumapp/views/post_details.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PostData extends StatelessWidget {
+class PostData extends StatefulWidget {
   const PostData({super.key, required this.post});
 
   final PostModel post;
+
+  @override
+  State<PostData> createState() => _PostDataState();
+}
+
+class _PostDataState extends State<PostData> {
+  final PostController _postController = Get.put(PostController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +29,27 @@ class PostData extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            post.user!.name!,
+            widget.post.user!.name!,
             style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
           ),
-          Text(post.user!.email!, style: GoogleFonts.poppins(fontSize: 12)),
+          Text(widget.post.user!.email!,
+              style: GoogleFonts.poppins(fontSize: 12)),
           const SizedBox(height: 10),
-          Text(post.content!),
+          Text(widget.post.content!),
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_up)),
+              IconButton(
+                  onPressed: () async {
+                    await _postController.likeAndDislike(widget.post.id);
+                    _postController.getAllPosts();
+                  },
+                  icon: Icon(
+                    Icons.thumb_up,
+                    color: widget.post.liked! ? Colors.blue : Colors.black,
+                  )),
               IconButton(
                   onPressed: () {
-                    Get.to(() => PostDetails(post: post));
+                    Get.to(() => PostDetails(post: widget.post));
                   },
                   icon: const Icon(Icons.message))
             ],
