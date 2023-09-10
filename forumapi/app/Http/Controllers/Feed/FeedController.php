@@ -22,7 +22,6 @@ class FeedController extends Controller
 
     public function store(PostRequest $request)
     {
-
         $request -> validated();
 
         auth() -> user() -> feeds() -> create([
